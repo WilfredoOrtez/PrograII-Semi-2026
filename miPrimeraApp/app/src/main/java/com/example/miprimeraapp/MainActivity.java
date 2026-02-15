@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     TextView tempVal;
     Button btn;
     RadioButton opt;
+    RadioGroup radioGroup;
 
 
     @Override
@@ -36,22 +37,23 @@ public class MainActivity extends AppCompatActivity {
         double respuesta = 0;
 
 
-        opt = findViewById(R.id.optSuma);
-        if(opt.isChecked()) {
+        radioGroup = findViewById(R.id.optOpciones);
+        if(radioGroup.getCheckedRadioButtonId()==R.id.optSuma) {
             respuesta = num1 + num2;
         }
-        opt = findViewById(R.id.optResta);
-        if(opt.isChecked()){
+
+        if(radioGroup.getCheckedRadioButtonId()==R.id.optResta) {
             respuesta = num1 - num2;
         }
-        opt = findViewById(R.id.optMultiplicar);
-        if(opt.isChecked()){
+
+        if(radioGroup.getCheckedRadioButtonId()==R.id.optMultiplicar) {
             respuesta = num1 * num2;
         }
-        opt = findViewById(R.id.optDividir);
-        if(opt.isChecked()){
+
+        if(radioGroup.getCheckedRadioButtonId()==R.id.optDividir) {
             respuesta = num1 / num2;
         }
+
         // FACTORIAL
         opt = findViewById(R.id.optFactorial);
         if (opt.isChecked()){
