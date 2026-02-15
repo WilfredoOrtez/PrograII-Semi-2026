@@ -3,6 +3,7 @@ package com.example.miprimeraapp;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -15,6 +16,8 @@ public class MainActivity extends AppCompatActivity {
     TextView tempVal;
     Button btn;
     RadioButton opt;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,10 +28,10 @@ public class MainActivity extends AppCompatActivity {
     }
     private void calcular(){
         tempVal = findViewById(R.id.txtNum1);
-        Double num1 = Double.parseDouble(tempVal.getText().toString());
+        double num1 =  Double.parseDouble(tempVal.getText().toString());
 
         tempVal = findViewById(R.id.txtNum2);
-        Double num2 = Double.parseDouble(tempVal.getText().toString());
+        double num2 = Double.parseDouble(tempVal.getText().toString());
 
         double respuesta = 0;
 
@@ -48,6 +51,39 @@ public class MainActivity extends AppCompatActivity {
         opt = findViewById(R.id.optDividir);
         if(opt.isChecked()){
             respuesta = num1 / num2;
+        }
+        // FACTORIAL
+        opt = findViewById(R.id.optFactorial);
+        if (opt.isChecked()){
+
+            double facto = 1;
+
+            for (int i = 1; i <= num1; i++) {
+                facto = facto * i;
+            }
+
+            respuesta = facto;
+        }
+
+        // PORCENTAJE
+        opt = findViewById(R.id.optPorcentaje);
+        if (opt.isChecked()){
+            respuesta = (num1 * num2)/ 100;
+        }
+
+        // Exponenciacion
+        opt = findViewById(R.id.optExponenciacion);
+        if (opt.isChecked()){
+            respuesta = Math.pow(num1,num2);
+
+        }
+
+        // RAIZ
+        opt = findViewById(R.id.optExponenciacion);
+        if (opt.isChecked()){
+            num2 = 0;
+            respuesta = Math.sqrt(num1);
+
         }
 
         tempVal = findViewById(R.id.lblRespuesta);
