@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -17,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     Button btn;
     RadioButton opt;
     RadioGroup radioGroup;
+    Spinner spn;
 
 
     @Override
@@ -37,55 +39,20 @@ public class MainActivity extends AppCompatActivity {
         double respuesta = 0;
 
 
-        radioGroup = findViewById(R.id.optOpciones);
-        if(radioGroup.getCheckedRadioButtonId()==R.id.optSuma) {
-            respuesta = num1 + num2;
-        }
-
-        if(radioGroup.getCheckedRadioButtonId()==R.id.optResta) {
-            respuesta = num1 - num2;
-        }
-
-        if(radioGroup.getCheckedRadioButtonId()==R.id.optMultiplicar) {
-            respuesta = num1 * num2;
-        }
-
-        if(radioGroup.getCheckedRadioButtonId()==R.id.optDividir) {
-            respuesta = num1 / num2;
-        }
-
-        // FACTORIAL
-        opt = findViewById(R.id.optFactorial);
-        if (opt.isChecked()){
-
-            double facto = 1;
-
-            for (int i = 1; i <= num1; i++) {
-                facto = facto * i;
-            }
-
-            respuesta = facto;
-        }
-
-        // PORCENTAJE
-        opt = findViewById(R.id.optPorcentaje);
-        if (opt.isChecked()){
-            respuesta = (num1 * num2)/ 100;
-        }
-
-        // Exponenciacion
-        opt = findViewById(R.id.optExponenciacion);
-        if (opt.isChecked()){
-            respuesta = Math.pow(num1,num2);
-
-        }
-
-        // RAIZ
-        opt = findViewById(R.id.optExponenciacion);
-        if (opt.isChecked()){
-            num2 = 0;
-            respuesta = Math.sqrt(num1);
-
+        spn = findViewById(R.id.cboOpciones);
+        switch (spn.getSelectedItemPosition()){
+            case 0: // Posicion 0 -> SUMA
+                respuesta = num1 + num2;
+                break;
+            case 1:// Posicion 1 -> RESTA
+                respuesta = num1 - num2;
+                break;
+            case 2:// Posicion 2 -> MULTI
+                respuesta = num1 * num2;
+                break;
+            case  3:// Posicion 3 -> DIVISION
+                respuesta = num1 / num2;
+                break;
         }
 
         tempVal = findViewById(R.id.lblRespuesta);
