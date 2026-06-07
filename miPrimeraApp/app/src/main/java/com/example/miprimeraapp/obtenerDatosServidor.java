@@ -1,4 +1,4 @@
-package com.ugb.miprimeraapp;
+package com.example.miprimeraapp;
 
 import android.os.AsyncTask;
 

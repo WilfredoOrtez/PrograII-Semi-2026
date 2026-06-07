@@ -5,7 +5,7 @@ plugins {
 android {
     namespace = "com.example.miprimeraapp"
     compileSdk {
-        version = release(26)
+        version = release(36)
     }
 
     defaultConfig {
