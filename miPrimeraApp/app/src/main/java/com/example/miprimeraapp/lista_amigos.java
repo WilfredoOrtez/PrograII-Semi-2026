@@ -49,6 +49,7 @@ public class lista_amigos extends Activity {
 
         fab = findViewById(R.id.fabAgregarAmigos);
         fab.setOnClickListener(v->abrirActivity());
+        di = new detectarinternet(this);
 
         obtenerAmigos();
         buscarAmigos();
@@ -62,7 +63,7 @@ public class lista_amigos extends Activity {
         try{
             AdapterView.AdapterContextMenuInfo info =(AdapterView.AdapterContextMenuInfo)menuInfo;
             posicion = info.position;
-            menu.setHeaderTitle(jsonArray.getJSONObject(posicion).getString("nombre"));
+            menu.setHeaderTitle(jsonArray.getJSONObject(posicion).getJSONObject("value").getString("nombre"));
         } catch (Exception e) {
             mostrarMsg("Error al desplegar menu: "+ e.getMessage());
         }
@@ -75,7 +76,7 @@ public class lista_amigos extends Activity {
                 abrirActivity();
             }else if(item.getItemId()==R.id.mnxModificar){
                 parametros.putString("accion", "modificar");
-                parametros.putString("amigos", jsonArray.getJSONObject(posicion).toString());
+                parametros.putString("amigos", jsonArray.getJSONObject(posicion).getJSONObject("value").toString());
                 abrirActivity();
             }else if (item.getItemId()==R.id.mnxEliminar){
                 borrarAmigo();
@@ -95,11 +96,26 @@ public class lista_amigos extends Activity {
             confirmacion.setPositiveButton("SI", (dialog, which)->{
                 try{
                     String respuesta = db.administrar_amigos("eliminar",
-                            new String[]{jsonArray.getJSONObject(posicion).getString("idAmigo")});
-                    if(respuesta.equals("ok")){
-                        obtenerAmigos();
-                        mostrarMsg("Amigo borrado con exito.");
+                            new String[]{jsonArray.getJSONObject(posicion).getJSONObject("value").getString("idAmigo")});
+
+                    if( respuesta.equals("ok") && di.hayConexionInternet() ){
+                        JSONObject datosAmigos = new JSONObject();
+                        String _id = jsonArray.getJSONObject(posicion).getJSONObject("value").getString("_id");
+                        String _rev = jsonArray.getJSONObject(posicion).getJSONObject("value").getString("_rev");
+                        String url = utilidades.url_mto +"/"+_id +"?rev="+ _rev;
+
+                        enviarDatosServidor objEnviarDatosServidor = new enviarDatosServidor(this);
+                        respuesta = objEnviarDatosServidor.execute(datosAmigos.toString(),"DELETE", url).get();
+                        JSONObject respuestaJSON = new JSONObject(respuesta);
+
+                        if(!respuestaJSON.getBoolean("ok")){
+                            mostrarMsg("Error al eliminar en el servidor: "+ respuesta);
+                        }
+                        mostrarMsg("Registro eliminado con exito.");
+                    }else if(respuesta.equals("ok")){
+                        mostrarMsg("Amigo borrado con exito solo en local.");
                     }
+                    obtenerAmigos();
                 }catch (Exception e){
                     mostrarMsg(e.getMessage());
                 }
@@ -149,7 +165,7 @@ public class lista_amigos extends Activity {
     }
     private void obtenerAmigos(){
         try{
-            di = new detectarinternet(this);
+
             if(di.hayConexionInternet()){//si hay conexion a internet
                 datosServidor = new obtenerDatosServidor();
                 String respuesta = datosServidor.execute().get();
